@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Epidemiology & Biostatistics Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+   
+    <link rel="stylesheet" href="home.css">
+    
+</head>
+<body class="antialiased text-gray-800">
+     <span class="logo-icon">
+       <img src=" images/logo-img.png " alt="logo image" width="100px" height="100px" class="logo-img">
+     </span>
+    
+    
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="mb-8 text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-700">Epidemiology & Biostatistics Calculator</h1>
+            <p class="text-md text-gray-500 mt-2">Solve common problems with step-by-step working.</p>
+        </header>
+
+        <div class="flex flex-col md:flex-row gap-6 md:gap-8">
+            <aside class="md:w-1/4 bg-white p-4 md:p-6 rounded-lg shadow-lg">
+                <h2 class="text-xl font-semibold mb-4 text-gray-700">Calculators</h2>
+                <nav id="sidebarNav">
+                    <a href="#" class="sidebar-link active" data-target="prevalence">Prevalence</a>
+                    <a href="#" class="sidebar-link" data-target="incidence-rate">Incidence Rate</a>
+                    <a href="#" class="sidebar-link" data-target="relative-risk">Relative Risk</a>
+                    <a href="#" class="sidebar-link" data-target="odds-ratio">Odds Ratio</a>
+                    </nav>
+            </aside>
+
+            <main class="md:w-3/4 bg-white p-4 md:p-6 rounded-lg shadow-lg">
+                <section id="prevalence" class="calculator-section active">
+                    <h2 class="text-2xl font-semibold mb-4 text-blue-600">Prevalence Calculator</h2>
+                    <p class="mb-4 text-gray-600">Calculates the proportion of a population that has a disease at a specific point in time.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label for="prev_cases" class="block text-sm font-medium text-gray-700 mb-1">Number of Existing Cases:</label>
+                            <input type="number" id="prev_cases" class="input-field w-full p-2 border rounded-md" placeholder="e.g., 50">
+                        </div>
+                        <div>
+                            <label for="prev_population" class="block text-sm font-medium text-gray-700 mb-1">Total Population:</label>
+                            <input type="number" id="prev_population" class="input-field w-full p-2 border rounded-md" placeholder="e.g., 1000">
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <button onclick="calculatePrevalence()" class="btn btn-primary">Calculate</button>
+                        <button onclick="clearInputs('prevalence')" class="btn btn-secondary">Clear</button>
+                    </div>
+
+                    <div id="prevalence_formula" class="formula-box mt-6" style="display:none;"></div>
+                    <div id="prevalence_working" class="working-box mt-4" style="display:none;"></div>
+                    
+  <div id="prevalence_result" class="result-box mt-4" style="display:none;"></div>
+       </section>
+
+                <section id="incidence-rate" class="calculator-section">
+                    <h2 class="text-2xl font-semibold mb-4 text-blue-600">Incidence Rate Calculator</h2>
+                    <p class="mb-4 text-gray-600">Calculates the rate at which new cases of a disease occur in a population over a period of time, considering person-time at risk.</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label for="ir_new_cases" class="block text-sm font-medium text-gray-700 mb-1">Number of New Cases:</label>
+                            <input type="number" id="ir_new_cases" class="input-field w-full p-2 border rounded-md" placeholder="e.g., 15">
+                        </div>
+                        <div>
+                            <label for="ir_person_time" class="block text-sm font-medium text-gray-700 mb-1">Total Person-Time at Risk:</label>
+                            <input type="number" id="ir_person_time" class="input-field w-full p-2 border rounded-md" placeholder="e.g., 500 (person-years)">
+                        </div>
+                         <div>
+                            <label for="ir_multiplier" class="block text-sm font-medium text-gray-700 mb-1">Multiplier (e.g., 100, 1000):</label>
+                            <input type="number" id="ir_multiplier" class="input-field w-full p-2 border rounded-md" value="1000" placeholder="e.g., 1000">
+                        </div>
+                    </div>
+                     <div class="flex gap-4">
+                        <button onclick="calculateIncidenceRate()" class="btn btn-primary">Calculate</button>
+                        <button onclick="clearInputs('incidence-rate')" class="btn btn-secondary">Clear</button>
+                    </div>
+
+                    <div id="ir_formula" class="formula-box mt-6" style="display:none;"></div>
+                    <div id="ir_working" class="working-box mt-4" style="display:none;"></div>
+                    <div id="ir_result" class="result-box mt-4" style="display:none;"></div>
+                </section>
+
+                <section id="relative-risk" class="calculator-section">
+                    <h2 class="text-2xl font-semibold mb-4 text-blue-600">Relative Risk (RR) Calculator</h2>
+                    <p class="mb-4 text-gray-600">Compares the risk of a health event among an exposed group to the risk among an unexposed group. Typically used in cohort studies.</p>
+                    <p class="mb-4 text-sm text-gray-500">Enter data based on a 2x2 table:</p>
+                    <div class="mb-4 p-3 border rounded-md bg-gray-50">
+                        <div class="grid grid-cols-3 gap-2 items-center text-center font-medium mb-2">
+                            <div></div>
+                            <div class="text-gray-700">Disease Yes</div>
+                            <div class="text-gray-700">Disease No</div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 items-center mb-2">
+                            <div class="text-left font-medium text-gray-700">Exposed</div>
+                            <input type="number" id="rr_a" class="input-field w-full p-2 border rounded-md text-center" placeholder="a">
+                            <input type="number" id="rr_b" class="input-field w-full p-2 border rounded-md text-center" placeholder="b">
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 items-center">
+                            <div class="text-left font-medium text-gray-700">Unexposed</div>
+                            <input type="number" id="rr_c" class="input-field w-full p-2 border rounded-md text-center" placeholder="c">
+                            <input type="number" id="rr_d" class="input-field w-full p-2 border rounded-md text-center" placeholder="d">
+                        </div>
+                    </div>
+                     <div class="flex gap-4">
+                        <button onclick="calculateRelativeRisk()" class="btn btn-primary">Calculate RR</button>
+                        <button onclick="clearInputs('relative-risk')" class="btn btn-secondary">Clear</button>
+                    </div>
+
+                    <div id="rr_formula" class="formula-box mt-6" style="display:none;"></div>
+                    <div id="rr_working" class="working-box mt-4" style="display:none;"></div>
+                    <div id="rr_result" class="result-box mt-4" style="display:none;"></div>
+                </section>
+
+                <section id="odds-ratio" class="calculator-section">
+                    <h2 class="text-2xl font-semibold mb-4 text-blue-600">Odds Ratio (OR) Calculator</h2>
+                    <p class="mb-4 text-gray-600">Estimates the odds of an outcome occurring given a particular exposure, compared to the odds of the outcome occurring in the absence of that exposure. Typically used in case-control studies.</p>
+                    <p class="mb-4 text-sm text-gray-500">Enter data based on a 2x2 table:</p>
+                    <div class="mb-4 p-3 border rounded-md bg-gray-50">
+                        <div class="grid grid-cols-3 gap-2 items-center text-center font-medium mb-2">
+                            <div></div>
+                            <div class="text-gray-700">Cases (Disease Yes)</div>
+                            <div class="text-gray-700">Controls (Disease No)</div>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 items-center mb-2">
+                            <div class="text-left font-medium text-gray-700">Exposed</div>
+                            <input type="number" id="or_a" class="input-field w-full p-2 border rounded-md text-center" placeholder="a">
+                            <input type="number" id="or_b" class="input-field w-full p-2 border rounded-md text-center" placeholder="b">
+                        </div>
+                        <div class="grid grid-cols-3 gap-2 items-center">
+                            <div class="text-left font-medium text-gray-700">Unexposed</div>
+                            <input type="number" id="or_c" class="input-field w-full p-2 border rounded-md text-center" placeholder="c">
+                            <input type="number" id="or_d" class="input-field w-full p-2 border rounded-md text-center" placeholder="d">
+                        </div>
+                    </div>
+                     <div class="flex gap-4">
+                        <button onclick="calculateOddsRatio()" class="btn btn-primary">Calculate OR</button>
+                        <button onclick="clearInputs('odds-ratio')" class="btn btn-secondary">Clear</button>
+                    </div>
+                    <div id="or_formula" class="formula-box mt-6" style="display:none;"></div>
+                    <div id="or_working" class="working-box mt-4" style="display:none;"></div>
+                    <div id="or_result" class="result-box mt-4" style="display:none;"></div>
+                </section>
+                
+                <div id="welcome-message" class="text-center p-8 text-gray-500" style="display:none;">
+                    <h3 class="text-xl font-medium">Select a calculator from the sidebar to get started.</h3>
+                </div>
+
+            </main>
+        </div>
+
+        <footer class="mt-8 text-center text-sm text-gray-500">
+            <p><small>&copy; 2025 Epidemiology & Biostatistics Tools. For educational purposes.</small></p>
+        </footer>
+    </div>
+
+    <script src="main.js">
+
+    </script>
+</body>
+</html>
